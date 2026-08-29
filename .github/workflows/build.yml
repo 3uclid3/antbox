@@ -15,7 +15,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: 3uclid3/ci-${{ matrix.compiler }}:latest
+      image: 3uclid3/ci-${{ matrix.compiler }}-gui:latest
 
     steps:
       - name: Checkout

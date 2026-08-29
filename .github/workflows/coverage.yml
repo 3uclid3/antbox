@@ -6,7 +6,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     container:
-      image: 3uclid3/ci-gcc:latest
+      image: 3uclid3/ci-gcc-gui:latest
 
     steps:
       - name: Checkout
