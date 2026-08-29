@@ -1,0 +1,10 @@
+# IDE
+.idea/*
+.vs/*
+.vscode/*
+.zed/*
+
+# Builds
+.cache/*
+__pycache__/*
+build/*

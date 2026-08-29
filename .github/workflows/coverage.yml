@@ -1,0 +1,48 @@
+name: Coverage
+
+on: [push, pull_request]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    container:
+      image: 3uclid3/ci-gcc:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        run: |
+          cmake --preset coverage
+
+      - name: Compile
+        working-directory: build
+        run: |
+          cmake --build .
+
+      - name: Tests
+        working-directory: build
+        run: |
+          ctest --output-on-failure
+
+      - name: Generate coverage report
+        run: |
+          gcovr \
+            --root "$GITHUB_WORKSPACE" \
+            --filter "$GITHUB_WORKSPACE/include" \
+            --filter "$GITHUB_WORKSPACE/src" \
+            --object-directory build \
+            --xml coverage.xml \
+            --verbose \
+            --exclude-throw-branches \
+            --print-summary
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
+          disable_search: true
+          plugins: noop
+          token: ${{ secrets.CODECOV_TOKEN }}
