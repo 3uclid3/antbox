@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(antbox VERSION 0.1.0 LANGUAGES CXX)
+project(antbox VERSION 0.1.0 LANGUAGES C CXX)
 
 #
 set(CXX_EXTENSIONS OFF)
@@ -15,6 +15,8 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(ant)
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/rlimgui.cmake")
 
 # warning
 add_library(antbox_warnings INTERFACE)
@@ -32,6 +34,7 @@ target_link_libraries(antbox
     ant::ant
   PRIVATE
     antbox_warnings
+    rlimgui::rlimgui
 )
 target_compile_features(antbox PUBLIC cxx_std_26)
 target_compile_options(antbox PUBLIC -freflection) # experimental
@@ -49,7 +52,7 @@ target_sources(antbox
 # antbox.app
 add_executable(antbox.app app/main.cpp)
 set_target_properties(antbox.app PROPERTIES OUTPUT_NAME antbox)
-target_link_libraries(antbox.app PRIVATE antbox_warnings antbox::antbox)
+target_link_libraries(antbox.app PRIVATE antbox_warnings antbox::antbox rlimgui::rlimgui)
 
 # tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
