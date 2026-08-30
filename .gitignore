@@ -8,3 +8,6 @@
 .cache/*
 __pycache__/*
 build/*
+
+# ImGUI
+imgui.ini
