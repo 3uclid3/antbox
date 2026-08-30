@@ -5,8 +5,6 @@
 
 An ant-colony simulation sandbox built with [ant](https://github.com/3uclid3/ant).
 
-`antbox` is both an executable sandbox and a library containing the simulation itself. Keeping the application logic in `libantbox` makes the simulation directly testable without driving the executable.
-
 > **The project is experimental and actively evolving.**
 
 ## Requirements
