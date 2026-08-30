@@ -2,9 +2,10 @@
 
 namespace antbox {
 
-    struct dummy
+struct position
 {
-    dummy();
+    float x{};
+    float y{};
 };
 
 } // namespace antbox

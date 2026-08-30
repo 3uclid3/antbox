@@ -48,6 +48,10 @@ Local variants are also available for the `release` and `coverage` presets. All 
 
 ## Design
 
+The current vertical slice renders several colonies of wandering ants. Each ant is
+an ECS entity with position, velocity, steering, and colony membership components.
+Simulation updates run at a fixed timestep independently of rendering.
+
 **The library is the application.**
 Simulation behavior lives in the `antbox` library. The `antbox.app` target is a thin executable entry point, while unit tests link the same library directly.
 
