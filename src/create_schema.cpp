@@ -3,6 +3,7 @@
 #include <ant/schema.hpp>
 #include <antbox/application/application_clock.hpp>
 #include <antbox/application/input.hpp>
+#include <antbox/application/playback/playback.hpp>
 #include <antbox/graphics/color.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 #include <antbox/rendering/camera.hpp>
@@ -27,6 +28,7 @@ auto create_schema() -> ant::schema
     builder.define<color>();
     builder.define<graphics_context>();
     builder.define<input>();
+    builder.define<playback>();
     builder.define<position>();
     builder.define<steering>();
     builder.define<velocity>();

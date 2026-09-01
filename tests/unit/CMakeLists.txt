@@ -9,6 +9,8 @@ FetchContent_MakeAvailable(doctest)
 
 # antbox_unit
 add_executable(antbox_unit
+  src/application/playback/format_tick_count_tests.cpp
+  src/application/playback/playback_tests.cpp
   src/application/tick_accumulator_tests.cpp
   src/math/vec2_tests.cpp
   src/rendering/update_camera_tests.cpp

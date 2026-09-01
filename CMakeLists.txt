@@ -47,6 +47,9 @@ target_sources(antbox
       include/antbox/application/application_clock.hpp
       include/antbox/application/chrono.hpp
       include/antbox/application/input.hpp
+      include/antbox/application/playback/draw_playback.hpp
+      include/antbox/application/playback/format_tick_count.hpp
+      include/antbox/application/playback/playback.hpp
       include/antbox/application/poll_input.hpp
       include/antbox/application/poll_window.hpp
       include/antbox/application/tick_accumulator.hpp
@@ -75,6 +78,9 @@ target_sources(antbox
       include/antbox/simulation/movement/velocity.hpp
       include/antbox/application.hpp
   PRIVATE
+    src/application/playback/draw_playback.cpp
+    src/application/playback/format_tick_count.cpp
+    src/application/playback/playback.cpp
     src/application/poll_input.cpp
     src/application/poll_window.cpp
     src/application/tick_accumulator.cpp

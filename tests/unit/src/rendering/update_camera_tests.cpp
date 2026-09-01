@@ -50,12 +50,12 @@ TEST_CASE_FIXTURE(fixture, "update_camera: eases keyboard movement and wheel zoo
 
     camera& cam = get_env<camera>();
 
-    CHECK(cam.target.x > 0.0f);
+    CHECK_GT(cam.target.x, 0.0f);
     CHECK_EQ(cam.target.y, doctest::Approx(0.0f));
-    CHECK(cam.pan_velocity.x > 0.0f);
-    CHECK(cam.pan_velocity.x < 600.0f);
-    CHECK(cam.zoom > 1.0f);
-    CHECK(cam.zoom < 1.2f);
+    CHECK_GT(cam.pan_velocity.x, 0.0f);
+    CHECK_LT(cam.pan_velocity.x, 600.0f);
+    CHECK_GT(cam.zoom, 1.0f);
+    CHECK_LT(cam.zoom, 1.2f);
     CHECK_EQ(cam.target_zoom, doctest::Approx(1.2f));
 }
 

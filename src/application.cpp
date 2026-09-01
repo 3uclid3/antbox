@@ -11,6 +11,7 @@
 #include <ant/scheduler.hpp>
 #include <antbox/application/application_clock.hpp>
 #include <antbox/application/chrono.hpp>
+#include <antbox/application/playback/playback.hpp>
 #include <antbox/application/tick_accumulator.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 
@@ -91,18 +92,27 @@ public:
             const auto elapsed = now - _last_frame;
             _last_frame = now;
 
-            _tick_accumulator.update(elapsed);
-
             ant::env_of env = _database.env_of<application_clock>();
             env.get<application_clock>().delta = std::chrono::duration<float>(elapsed).count();
 
             _scheduler.execute<application_schedule>();
 
+            playback& controls = _database.env_of<playback>().get<playback>();
             std::size_t tick_count = 0;
-            while (tick_count < max_ticks_per_frame && _tick_accumulator.consume_tick())
+            if (controls.consume_step())
             {
                 _scheduler.execute<simulation_schedule>();
                 ++tick_count;
+            }
+
+            if (!controls.paused())
+            {
+                _tick_accumulator.update(std::chrono::duration_cast<chrono::clock::duration>(elapsed * controls.speed_multiplier()));
+                while (tick_count < max_ticks_per_frame && _tick_accumulator.consume_tick())
+                {
+                    _scheduler.execute<simulation_schedule>();
+                    ++tick_count;
+                }
             }
 
             if (should_render())

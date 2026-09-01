@@ -6,6 +6,7 @@
 #include <ant/database.hpp>
 #include <antbox/application/application_clock.hpp>
 #include <antbox/application/input.hpp>
+#include <antbox/application/playback/playback.hpp>
 #include <antbox/graphics/color.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 #include <antbox/rendering/camera.hpp>
@@ -32,7 +33,8 @@ using bootstrap_changeset_signature = ant::changeset_signature<
         camera,
         clock,
         graphics_context,
-        input>>;
+        input,
+        playback>>;
 
 constexpr std::array centers{
     position{-230.0f, -100.0f},
@@ -55,6 +57,7 @@ auto bootstrap_simulation(ant::database& database, float delta) -> void
     cs.set_env<application_clock>();
     cs.set_env<graphics_context>(graphics_context{.clear_color = {24, 27, 33, 255}});
     cs.set_env<input>();
+    cs.set_env<playback>();
 
     std::array<ant::entity, centers.size()> colonies;
     std::mt19937 random{0xA17B0U};

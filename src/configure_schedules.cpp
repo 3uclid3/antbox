@@ -1,6 +1,7 @@
 #include "configure_schedules.hpp"
 
 #include <ant/scheduler.hpp>
+#include <antbox/application/playback/draw_playback.hpp>
 #include <antbox/application/poll_input.hpp>
 #include <antbox/application/poll_window.hpp>
 #include <antbox/graphics/begin_render.hpp>
@@ -75,7 +76,8 @@ auto configure_rendering_schedule(ant::scheduler& scheduler) -> void
     pre_render_imgui.add<begin_render_rlimgui>();
 
     // render_imgui stage
-    [[maybe_unused]] auto render_imgui = scheduler.stage<rendering_schedule::render_imgui>();
+    auto render_imgui = scheduler.stage<rendering_schedule::render_imgui>();
+    render_imgui.add<draw_playback>();
 
     // post_render_imgui stage
     auto post_render_imgui = scheduler.stage<rendering_schedule::post_render_imgui>();
