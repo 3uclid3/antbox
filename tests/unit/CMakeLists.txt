@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(doctest)
 # antbox_unit
 add_executable(antbox_unit
   src/application/tick_accumulator_tests.cpp
+  src/math/vec2_tests.cpp
   src/simulation/ant/steer_home_tests.cpp
   src/simulation/movement/move_tests.cpp
 

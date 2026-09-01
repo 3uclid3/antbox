@@ -54,6 +54,7 @@ target_sources(antbox
       include/antbox/graphics/end_render.hpp
       include/antbox/graphics/end_rlimgui.hpp
       include/antbox/graphics/graphics_context.hpp
+      include/antbox/math/vec2.hpp
       include/antbox/rendering/draw_ants.hpp
       include/antbox/rendering/draw_colonies.hpp
       include/antbox/rendering/rendering_schedule.hpp
