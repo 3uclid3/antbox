@@ -18,9 +18,11 @@
 #include <antbox/application/application_clock.hpp>
 #include <antbox/application/application_schedule.hpp>
 #include <antbox/application/chrono.hpp>
+#include <antbox/application/input/input.hpp>
 #include <antbox/application/tick_accumulator.hpp>
 #include <antbox/graphics/color.hpp>
 #include <antbox/graphics/graphics_context.hpp>
+#include <antbox/rendering/camera.hpp>
 #include <antbox/rendering/rendering_schedule.hpp>
 #include <antbox/simulation/ant/colony_member.hpp>
 #include <antbox/simulation/clock.hpp>
@@ -57,12 +59,22 @@ public:
         configure_schedules();
 
         bootstrap();
-        _clock.update();
+
+        // ensure bootstrap doesn't cause a large first frame
+        _last_frame = chrono::clock::now();
 
         while (!WindowShouldClose())
         {
-            _clock.update();
-            _tick_accumulator.update(_clock.delta());
+            const auto now = chrono::clock::now();
+            const auto elapsed = now - _last_frame;
+            _last_frame = now;
+
+            _tick_accumulator.update(elapsed);
+            _database.env_of<application_clock>().get<application_clock>().delta = std::chrono::duration<float>(elapsed).count();
+            _database.env_of<graphics_context>().get<graphics_context>().viewport_size = {
+                static_cast<float>(GetScreenWidth()),
+                static_cast<float>(GetScreenHeight()),
+            };
 
             _scheduler.execute<application_schedule>();
 
@@ -87,14 +99,17 @@ private:
     {
         ant::schema::builder builder;
 
+        builder.define<application_clock>();
+        builder.define<camera>();
         builder.define<clock>();
+        builder.define<colony>();
+        builder.define<colony_member>();
         builder.define<color>();
         builder.define<graphics_context>();
+        builder.define<input>();
         builder.define<position>();
-        builder.define<velocity>();
         builder.define<steering>();
-        builder.define<colony_member>();
-        builder.define<colony>();
+        builder.define<velocity>();
 
         return builder.build();
     }
@@ -112,12 +127,29 @@ private:
 
     auto bootstrap() -> void
     {
-        using signature = ant::changeset_signature<ant::create, ant::attach<position, velocity, steering, colony_member, colony, color>, ant::set_env<clock, graphics_context>>;
+        using signature = ant::changeset_signature<
+            ant::create,
+            ant::attach<
+                position,
+                velocity,
+                steering,
+                colony_member,
+                colony,
+                color>,
+            ant::set_env<
+                application_clock,
+                camera,
+                clock,
+                graphics_context,
+                input>>;
 
         ant::change_accumulator accumulator{_database.schema()};
         ant::changeset<signature> cs = _database.changeset<signature>(accumulator);
+        cs.set_env<camera>();
         cs.set_env<clock>(clock{.delta = std::chrono::duration<float>(_tick_accumulator.target_delta()).count()});
+        cs.set_env<application_clock>();
         cs.set_env<graphics_context>(graphics_context{.clear_color = {24, 27, 33, 255}});
+        cs.set_env<input>();
 
         constexpr std::array centers{
             position{-230.0f, -100.0f},
@@ -152,7 +184,7 @@ private:
                 const float angle = angle_distribution(random);
                 const float radius = radius_distribution(random);
                 const ant::entity entity = cs.create();
-                cs.attach<position>(entity, center.x + std::cos(angle) * radius, center.y + std::sin(angle) * radius);
+                cs.attach<position>(entity, center.vec.x + std::cos(angle) * radius, center.vec.y + std::sin(angle) * radius);
                 cs.attach<velocity>(entity, std::cos(angle) * 52.0f, std::sin(angle) * 52.0f);
                 cs.attach<steering>(entity);
                 cs.attach<colony_member>(entity, home);
@@ -171,8 +203,8 @@ private:
     ant::database _database{create_schema()};
     ant::scheduler _scheduler{_database};
 
-    application_clock _clock;
     tick_accumulator _tick_accumulator{std::chrono::duration_cast<chrono::clock::duration>(std::chrono::duration<double>{1.0 / 60.0})};
+    chrono::clock::time_point _last_frame{chrono::clock::now()};
 };
 
 auto run() -> int

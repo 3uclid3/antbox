@@ -47,17 +47,23 @@ target_sources(antbox
       include/antbox/application/application_clock.hpp
       include/antbox/application/application_schedule.hpp
       include/antbox/application/chrono.hpp
+      include/antbox/application/input/input.hpp
+      include/antbox/application/input/poll_input.hpp
       include/antbox/application/tick_accumulator.hpp
       include/antbox/graphics/begin_render.hpp
-      include/antbox/graphics/begin_rlimgui.hpp
+      include/antbox/graphics/begin_render_rlimgui.hpp
+      include/antbox/graphics/begin_render_world.hpp
       include/antbox/graphics/color.hpp
       include/antbox/graphics/end_render.hpp
-      include/antbox/graphics/end_rlimgui.hpp
+      include/antbox/graphics/end_render_rlimgui.hpp
+      include/antbox/graphics/end_render_world.hpp
       include/antbox/graphics/graphics_context.hpp
       include/antbox/math/vec2.hpp
+      include/antbox/rendering/camera.hpp
       include/antbox/rendering/draw_ants.hpp
       include/antbox/rendering/draw_colonies.hpp
       include/antbox/rendering/rendering_schedule.hpp
+      include/antbox/rendering/update_camera.hpp
       include/antbox/simulation/ant/colony_member.hpp
       include/antbox/simulation/ant/steer_home.hpp
       include/antbox/simulation/ant/wander.hpp
@@ -71,17 +77,20 @@ target_sources(antbox
       include/antbox/simulation/simulation_schedule.hpp
       include/antbox/application.hpp
   PRIVATE
-    src/application/application_clock.cpp
     src/application/application_schedule.cpp
+    src/application/poll_input.cpp
     src/application/tick_accumulator.cpp
     src/graphics/begin_render.cpp
     src/graphics/begin_rlimgui.cpp
+    src/graphics/begin_render_world.cpp
     src/graphics/color.cpp
     src/graphics/end_render.cpp
     src/graphics/end_rlimgui.cpp
+    src/graphics/end_render_world.cpp
     src/rendering/draw_ants.cpp
     src/rendering/draw_colonies.cpp
     src/rendering/rendering_schedule.cpp
+    src/rendering/update_camera.cpp
     src/simulation/ant/steer_home.cpp
     src/simulation/ant/wander.cpp
     src/simulation/clock/advance_clock.cpp

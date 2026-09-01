@@ -6,7 +6,7 @@ namespace antbox {
 
 struct graphics_context;
 
-struct begin_rlimgui
+struct begin_render_rlimgui
 {
     auto operator()(ant::env_of<graphics_context> ctx) const -> void;
 };

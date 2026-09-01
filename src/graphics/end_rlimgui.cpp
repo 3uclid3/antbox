@@ -1,4 +1,4 @@
-#include <antbox/graphics/end_rlimgui.hpp>
+#include <antbox/graphics/end_render_rlimgui.hpp>
 
 #include <rlImGui.h>
 
@@ -6,7 +6,7 @@
 
 namespace antbox {
 
-auto end_rlimgui::operator()(ant::env_of<graphics_context>) const -> void
+auto end_render_rlimgui::operator()(ant::env_of<graphics_context>) const -> void
 {
     rlImGuiEnd();
 }
