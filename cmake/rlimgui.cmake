@@ -39,6 +39,10 @@ target_sources(imgui
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
 )
 
+add_executable(imgui_binary_to_compressed_c EXCLUDE_FROM_ALL
+  ${imgui_SOURCE_DIR}/misc/fonts/binary_to_compressed_c.cpp
+)
+
 # rlimgui
 add_library(rlimgui STATIC)
 add_library(rlimgui::rlimgui ALIAS rlimgui)
@@ -60,3 +64,43 @@ target_sources(rlimgui
   PRIVATE
     ${rlimgui_SOURCE_DIR}/rlImGui.cpp
 )
+
+function(rlimgui_embed_font)
+  set(one_value_arguments TARGET FONT SYMBOL)
+  cmake_parse_arguments(ARG "" "${one_value_arguments}" "" ${ARGN})
+
+  foreach(required_argument IN ITEMS TARGET FONT SYMBOL)
+    if(NOT ARG_${required_argument})
+      message(FATAL_ERROR "rlimgui_embed_font requires ${required_argument}")
+    endif()
+  endforeach()
+
+  if(NOT TARGET ${ARG_TARGET})
+    message(FATAL_ERROR "rlimgui_embed_font target does not exist: ${ARG_TARGET}")
+  endif()
+
+  get_filename_component(font "${ARG_FONT}" ABSOLUTE BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+  set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+  set(font_data "${generated_dir}/${ARG_SYMBOL}_font_data.hpp")
+  set(generator "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/generate_embedded_font.cmake")
+
+  add_custom_command(
+    OUTPUT "${font_data}"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${generated_dir}"
+    COMMAND ${CMAKE_COMMAND}
+      "-DCONVERTER=$<TARGET_FILE:imgui_binary_to_compressed_c>"
+      "-DINPUT=${font}"
+      "-DOUTPUT=${font_data}"
+      "-DSYMBOL=${ARG_SYMBOL}"
+      -P "${generator}"
+    DEPENDS
+      imgui_binary_to_compressed_c
+      "${font}"
+      "${generator}"
+    COMMENT "Embedding ${ARG_FONT}"
+    VERBATIM
+  )
+
+  target_include_directories(${ARG_TARGET} PRIVATE "${generated_dir}")
+  target_sources(${ARG_TARGET} PRIVATE "${font_data}")
+endfunction()

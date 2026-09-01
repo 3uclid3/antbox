@@ -2,9 +2,10 @@
 
 #include <array>
 #include <cmath>
-#include <extras/FA6FreeSolidFontData.h> // from rlimgui
+#include <extras/FA6FreeSolidFontData.h>
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <jetbrains_mono_regular_font_data.hpp>
 #include <numbers>
 #include <random>
 #include <raylib.h>
@@ -34,6 +35,42 @@
 
 namespace antbox {
 
+namespace {
+
+auto setup_imgui() -> void
+{
+    rlImGuiSetup(true);
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->Clear();
+
+    const float dpi = GetWindowScaleDPI().x;
+    constexpr float base_font_size = 13.0f;
+    const float font_size = base_font_size * dpi;
+
+    ImFontConfig font_config;
+    font_config.FontDataOwnedByAtlas = false;
+    io.FontDefault = io.Fonts->AddFontFromMemoryCompressedTTF(
+        jetbrains_mono_regular_compressed_data,
+        jetbrains_mono_regular_compressed_size,
+        font_size,
+        &font_config);
+
+    ImFontConfig icon_config;
+    icon_config.FontDataOwnedByAtlas = false;
+    icon_config.MergeMode = true;
+    icon_config.PixelSnapH = true;
+    static constexpr ImWchar icon_ranges[]{ICON_MIN_FA, ICON_MAX_FA, 0};
+    io.Fonts->AddFontFromMemoryCompressedTTF(
+        fa_solid_900_compressed_data,
+        fa_solid_900_compressed_size,
+        font_size,
+        &icon_config,
+        icon_ranges);
+}
+
+} // namespace
+
 class application
 {
 public:
@@ -43,7 +80,7 @@ public:
         InitWindow(1280, 800, "antbox - ant-colony simulation sandbox");
         SetTargetFPS(144);
 
-        rlImGuiSetup(true);
+        setup_imgui();
     }
 
     ~application()

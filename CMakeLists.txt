@@ -98,6 +98,11 @@ target_sources(antbox
     src/simulation/simulation_schedule.cpp
     src/application.cpp
 )
+rlimgui_embed_font(
+  TARGET antbox
+  FONT fonts/JetBrainsMono-Regular.ttf
+  SYMBOL jetbrains_mono_regular
+)
 
 # antbox.app
 add_executable(antbox.app app/main.cpp)
