@@ -15,17 +15,16 @@ add_executable(antbox_unit
   src/simulation/ant/steer_home_tests.cpp
   src/simulation/movement/move_tests.cpp
 
-  src/system_fixture.hpp
-
   src/main.cpp
 )
 target_compile_definitions(antbox_unit PRIVATE DOCTEST_CONFIG_USE_STD_HEADERS)
 
 target_link_libraries(antbox_unit
     PRIVATE
-        antbox::antbox
-        antbox_warnings
-        doctest::doctest
+      antbox_warnings
+      antbox::antbox
+      ant::ant_testing
+      doctest::doctest
 )
 
 target_compile_options(antbox_unit

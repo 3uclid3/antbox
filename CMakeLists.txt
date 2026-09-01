@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
   ant
   GIT_REPOSITORY https://github.com/3uclid3/ant.git
-  GIT_TAG 6420eaebfb895c3af3cd87020091a3bae1af2302
+  GIT_TAG 07c954ffe66c3476a7342aea85bb901876e8c17e
 )
 
 FetchContent_MakeAvailable(ant)

@@ -1,100 +1,81 @@
 #include <antbox/rendering/update_camera.hpp>
 #include <doctest/doctest.h>
 
+#include <ant.testing/schema.hpp>
+#include <ant.testing/system.hpp>
 #include <antbox/application/application_clock.hpp>
 #include <antbox/application/input.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 #include <antbox/rendering/camera.hpp>
 
-#include "../system_fixture.hpp"
-
 namespace antbox { namespace {
 
-struct test_schedule;
-struct test_stage;
-
-auto make_schema() -> ant::schema
-{
-    return ant::schema::builder()
-        .define<camera>()
-        .define<application_clock>()
-        .define<graphics_context>()
-        .define<input>()
-        .build();
-}
-
-struct fixture : system_fixture
+struct fixture : ant::testing::system_fixture
 {
     fixture()
-        : system_fixture(make_schema())
+        : system_fixture(ant::testing::make_schema<
+                         camera,
+                         application_clock,
+                         graphics_context,
+                         input>())
     {
-    }
-
-    auto execute(camera cam, application_clock app_clock, input in, graphics_context graphics = {}) -> const camera&
-    {
-        set_env(cam, app_clock, graphics, in);
-        scheduler.stage<test_schedule, test_stage>().add<update_camera>();
-        scheduler.compile<test_schedule>();
-        scheduler.execute<test_schedule>();
-
-        return database.env_of<const camera>().get<camera>();
+        set_env(camera{}, application_clock{.delta = 1.0f / 60.0f}, input{}, graphics_context{.viewport_size = {1280.0f, 800.0f}});
     }
 };
 
 TEST_CASE_FIXTURE(fixture, "update_camera: tracks a middle-mouse drag in screen space")
 {
-    input in;
-    in.mouse.middle.down = true;
-    in.mouse.delta = {10.0f, -6.0f};
-
-    camera cam;
+    camera& cam = get_env<camera>();
     cam.zoom = 2.0f;
     cam.target_zoom = 2.0f;
 
-    const camera& result = execute(cam, application_clock{.delta = 1.0f / 60.0f}, in);
+    input& in = get_env<input>();
+    in.mouse.middle.down = true;
+    in.mouse.delta = {10.0f, -6.0f};
 
-    CHECK_EQ(result.target.x, doctest::Approx(-5.0f));
-    CHECK_EQ(result.target.y, doctest::Approx(3.0f));
+    execute<update_camera>();
+
+    CHECK_EQ(cam.target.x, doctest::Approx(-5.0f));
+    CHECK_EQ(cam.target.y, doctest::Approx(3.0f));
 }
 
 TEST_CASE_FIXTURE(fixture, "update_camera: eases keyboard movement and wheel zoom")
 {
-    input in;
+    input& in = get_env<input>();
     in.keyboard.arrow_right.down = true;
     in.mouse.wheel = 1.0f;
     in.mouse.position = {640.0f, 400.0f};
 
-    const camera& result = execute(
-        camera{},
-        application_clock{.delta = 1.0f / 60.0f},
-        in,
-        graphics_context{.viewport_size = {1280.0f, 800.0f}});
+    execute<update_camera>();
 
-    CHECK(result.target.x > 0.0f);
-    CHECK_EQ(result.target.y, doctest::Approx(0.0f));
-    CHECK(result.pan_velocity.x > 0.0f);
-    CHECK(result.pan_velocity.x < 600.0f);
-    CHECK(result.zoom > 1.0f);
-    CHECK(result.zoom < 1.2f);
-    CHECK_EQ(result.target_zoom, doctest::Approx(1.2f));
+    camera& cam = get_env<camera>();
+
+    CHECK(cam.target.x > 0.0f);
+    CHECK_EQ(cam.target.y, doctest::Approx(0.0f));
+    CHECK(cam.pan_velocity.x > 0.0f);
+    CHECK(cam.pan_velocity.x < 600.0f);
+    CHECK(cam.zoom > 1.0f);
+    CHECK(cam.zoom < 1.2f);
+    CHECK_EQ(cam.target_zoom, doctest::Approx(1.2f));
 }
 
 TEST_CASE_FIXTURE(fixture, "update_camera: keeps the world beneath the cursor fixed while zooming")
 {
-    input in;
+    get_env<graphics_context>().viewport_size = {1000.0f, 800.0f};
+
+    input& in = get_env<input>();
     in.mouse.position = {750.0f, 400.0f};
     in.mouse.wheel = 1.0f;
 
-    const camera& result = execute(
-        camera{},
-        application_clock{.delta = 1.0f / 60.0f},
-        in,
-        graphics_context{.viewport_size = {1000.0f, 800.0f}});
+    execute<update_camera>();
+
+    camera& cam = get_env<camera>();
 
     const float world_before = 250.0f;
-    const float world_after = result.target.x + 250.0f / result.zoom;
+    const float world_after = cam.target.x + 250.0f / cam.zoom;
+
     CHECK_EQ(world_after, doctest::Approx(world_before));
-    CHECK_EQ(result.target.y, doctest::Approx(0.0f));
+    CHECK_EQ(cam.target.y, doctest::Approx(0.0f));
 }
 
 }} // namespace antbox
