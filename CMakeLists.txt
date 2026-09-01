@@ -91,8 +91,12 @@ target_sources(antbox
     src/simulation/clock/advance_clock.cpp
     src/simulation/movement/move.cpp
     src/application.cpp
+    src/bootstrap_simulation.hpp
+    src/bootstrap_simulation.cpp
     src/configure_schedules.hpp
     src/configure_schedules.cpp
+    src/create_schema.hpp
+    src/create_schema.cpp
 )
 rlimgui_embed_font(
   TARGET antbox
