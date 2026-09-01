@@ -1,10 +1,10 @@
-#include <antbox/application/input/poll_input.hpp>
+#include <antbox/application/poll_input.hpp>
 
 #include <imgui.h>
 #include <raylib.h>
 
 #include <ant/env.hpp>
-#include <antbox/application/input/input.hpp>
+#include <antbox/application/input.hpp>
 
 namespace antbox {
 

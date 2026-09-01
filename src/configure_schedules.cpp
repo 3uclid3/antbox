@@ -1,7 +1,8 @@
 #include "configure_schedules.hpp"
 
 #include <ant/scheduler.hpp>
-#include <antbox/application/input/poll_input.hpp>
+#include <antbox/application/poll_input.hpp>
+#include <antbox/application/poll_window.hpp>
 #include <antbox/graphics/begin_render.hpp>
 #include <antbox/graphics/begin_render_rlimgui.hpp>
 #include <antbox/graphics/begin_render_world.hpp>
@@ -24,8 +25,12 @@ auto configure_application_schedule(ant::scheduler& scheduler) -> void
 {
     auto update = scheduler.stage<application_schedule::update>();
 
+    auto window_system = update.add<poll_window>();
     auto input_system = update.add<poll_input>();
-    update.add<update_camera>().after(input_system);
+
+    update.add<update_camera>()
+        .after(window_system)
+        .after(input_system);
 
     scheduler.compile<application_schedule>();
 }

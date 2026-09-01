@@ -85,8 +85,6 @@ public:
         // ensure bootstrap doesn't cause a large first frame
         _last_frame = chrono::clock::now();
 
-        ant::env_of env = _database.env_of<application_clock, graphics_context>();
-
         while (!WindowShouldClose())
         {
             const auto now = chrono::clock::now();
@@ -94,11 +92,9 @@ public:
             _last_frame = now;
 
             _tick_accumulator.update(elapsed);
+
+            ant::env_of env = _database.env_of<application_clock>();
             env.get<application_clock>().delta = std::chrono::duration<float>(elapsed).count();
-            env.get<graphics_context>().viewport_size = {
-                static_cast<float>(GetScreenWidth()),
-                static_cast<float>(GetScreenHeight()),
-            };
 
             _scheduler.execute<application_schedule>();
 

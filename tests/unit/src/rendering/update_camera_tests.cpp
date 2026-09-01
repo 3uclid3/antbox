@@ -2,7 +2,7 @@
 #include <doctest/doctest.h>
 
 #include <antbox/application/application_clock.hpp>
-#include <antbox/application/input/input.hpp>
+#include <antbox/application/input.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 #include <antbox/rendering/camera.hpp>
 

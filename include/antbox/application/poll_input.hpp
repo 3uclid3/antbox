@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ant/env/fwd.hpp>
-#include <ant/query/fwd.hpp>
 
 namespace antbox {
 

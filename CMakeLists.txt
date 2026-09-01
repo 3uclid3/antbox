@@ -46,8 +46,9 @@ target_sources(antbox
     FILES
       include/antbox/application/application_clock.hpp
       include/antbox/application/chrono.hpp
-      include/antbox/application/input/input.hpp
-      include/antbox/application/input/poll_input.hpp
+      include/antbox/application/input.hpp
+      include/antbox/application/poll_input.hpp
+      include/antbox/application/poll_window.hpp
       include/antbox/application/tick_accumulator.hpp
       include/antbox/graphics/begin_render.hpp
       include/antbox/graphics/begin_render_rlimgui.hpp
@@ -75,6 +76,7 @@ target_sources(antbox
       include/antbox/application.hpp
   PRIVATE
     src/application/poll_input.cpp
+    src/application/poll_window.cpp
     src/application/tick_accumulator.cpp
     src/graphics/begin_render.cpp
     src/graphics/begin_rlimgui.cpp
