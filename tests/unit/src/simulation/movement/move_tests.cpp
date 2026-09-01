@@ -31,7 +31,7 @@ struct fixture : system_fixture
     }
 };
 
-TEST_CASE_FIXTURE(fixture, "move applies steering and advances position")
+TEST_CASE_FIXTURE(fixture, "move: applies steering and advances position")
 {
     set_env<clock>(clock{.delta = 0.5F});
 
@@ -47,8 +47,8 @@ TEST_CASE_FIXTURE(fixture, "move applies steering and advances position")
     std::optional result = q.row(entity);
     REQUIRE(result.has_value());
 
-    CHECK(result->get<position>().x > 0.0F);
-    CHECK(result->get<position>().y > 0.0F);
+    CHECK(result->get<position>().vec.x > 0.0F);
+    CHECK(result->get<position>().vec.y > 0.0F);
 }
 
 }} // namespace antbox

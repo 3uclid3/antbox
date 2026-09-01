@@ -33,7 +33,7 @@ struct fixture : system_fixture
     }
 };
 
-TEST_CASE_FIXTURE(fixture, "steer home adds an inward influence near the colony edge")
+TEST_CASE_FIXTURE(fixture, "steer_home: adds an inward influence near the colony edge")
 {
     const ant::entity home = create_entity<position, colony>(
         position(0.0F, 0.0F),

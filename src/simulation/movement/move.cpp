@@ -1,9 +1,8 @@
 #include <antbox/simulation/movement/move.hpp>
 
-#include <cmath>
-
 #include <ant/env.hpp>
 #include <ant/query.hpp>
+#include <antbox/math/vec2.hpp>
 #include <antbox/simulation/clock.hpp>
 #include <antbox/simulation/movement/position.hpp>
 #include <antbox/simulation/movement/steering.hpp>
@@ -20,19 +19,19 @@ auto move::operator()(ant::env_of<const clock> env, ant::query_of<position, velo
         auto& vel = row.get<velocity>();
         const auto& steer = row.get<steering>();
 
-        const float speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+        const float speed = length(vel);
         vel.x += steer.x * delta;
         vel.y += steer.y * delta;
 
-        const float steered_speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+        const float steered_speed = length(vel);
         if (speed > 0.0F && steered_speed > 0.0F)
         {
             vel.x *= speed / steered_speed;
             vel.y *= speed / steered_speed;
         }
 
-        pos.x += vel.x * delta;
-        pos.y += vel.y * delta;
+        pos.vec.x += vel.x * delta;
+        pos.vec.y += vel.y * delta;
     }
 }
 

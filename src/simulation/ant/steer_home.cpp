@@ -1,9 +1,9 @@
 #include <antbox/simulation/ant/steer_home.hpp>
 
 #include <algorithm>
-#include <cmath>
 
 #include <ant/query.hpp>
+#include <antbox/math/vec2.hpp>
 #include <antbox/simulation/ant/colony_member.hpp>
 #include <antbox/simulation/colony/colony.hpp>
 #include <antbox/simulation/movement/position.hpp>
@@ -24,16 +24,15 @@ auto steer_home::operator()(ant::query<ants_query_signature> ants, ant::query<co
         const auto& home_colony = home->get<colony>();
         auto& steer = ant.get<steering>();
 
-        const float dx = home_position.x - ant_position.x;
-        const float dy = home_position.y - ant_position.y;
-        const float distance = std::sqrt(dx * dx + dy * dy);
+        const vec2 displacement = home_position.vec - ant_position.vec;
+        const float distance = length(displacement);
         const float edge = home_colony.range * 0.8F;
         if (distance <= edge || distance == 0.0F)
             continue;
 
         const float strength = std::clamp((distance - edge) / (home_colony.range - edge), 0.0F, 1.0F);
-        steer.x += dx / distance * strength * 140.0F;
-        steer.y += dy / distance * strength * 140.0F;
+        steer.x += displacement.x / distance * strength * 140.0F;
+        steer.y += displacement.y / distance * strength * 140.0F;
     }
 }
 
