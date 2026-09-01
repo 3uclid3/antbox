@@ -17,21 +17,20 @@
 #include <ant/scheduler.hpp>
 #include <ant/schema.hpp>
 #include <antbox/application/application_clock.hpp>
-#include <antbox/application/application_schedule.hpp>
 #include <antbox/application/chrono.hpp>
 #include <antbox/application/input/input.hpp>
 #include <antbox/application/tick_accumulator.hpp>
 #include <antbox/graphics/color.hpp>
 #include <antbox/graphics/graphics_context.hpp>
 #include <antbox/rendering/camera.hpp>
-#include <antbox/rendering/rendering_schedule.hpp>
 #include <antbox/simulation/ant/colony_member.hpp>
 #include <antbox/simulation/clock.hpp>
 #include <antbox/simulation/colony/colony.hpp>
 #include <antbox/simulation/movement/position.hpp>
 #include <antbox/simulation/movement/steering.hpp>
 #include <antbox/simulation/movement/velocity.hpp>
-#include <antbox/simulation/simulation_schedule.hpp>
+
+#include "configure_schedules.hpp"
 
 namespace antbox {
 
@@ -93,7 +92,7 @@ public:
     {
         constexpr std::size_t max_ticks_per_frame = 8;
 
-        configure_schedules();
+        configure_schedules(_scheduler);
 
         bootstrap();
 
@@ -149,17 +148,6 @@ private:
         builder.define<velocity>();
 
         return builder.build();
-    }
-
-    auto configure_schedules() -> void
-    {
-        application_schedule::configure(_scheduler);
-        rendering_schedule::configure(_scheduler);
-        simulation_schedule::configure(_scheduler);
-
-        _scheduler.compile<application_schedule>();
-        _scheduler.compile<rendering_schedule>();
-        _scheduler.compile<simulation_schedule>();
     }
 
     auto bootstrap() -> void

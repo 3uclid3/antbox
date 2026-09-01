@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
   ant
   GIT_REPOSITORY https://github.com/3uclid3/ant.git
-  GIT_TAG 5b8796694cf73bf40051705f365eacf8da8c9fce
+  GIT_TAG 6420eaebfb895c3af3cd87020091a3bae1af2302
 )
 
 FetchContent_MakeAvailable(ant)
@@ -45,7 +45,6 @@ target_sources(antbox
       include
     FILES
       include/antbox/application/application_clock.hpp
-      include/antbox/application/application_schedule.hpp
       include/antbox/application/chrono.hpp
       include/antbox/application/input/input.hpp
       include/antbox/application/input/poll_input.hpp
@@ -62,7 +61,6 @@ target_sources(antbox
       include/antbox/rendering/camera.hpp
       include/antbox/rendering/draw_ants.hpp
       include/antbox/rendering/draw_colonies.hpp
-      include/antbox/rendering/rendering_schedule.hpp
       include/antbox/rendering/update_camera.hpp
       include/antbox/simulation/ant/colony_member.hpp
       include/antbox/simulation/ant/steer_home.hpp
@@ -74,10 +72,8 @@ target_sources(antbox
       include/antbox/simulation/movement/position.hpp
       include/antbox/simulation/movement/steering.hpp
       include/antbox/simulation/movement/velocity.hpp
-      include/antbox/simulation/simulation_schedule.hpp
       include/antbox/application.hpp
   PRIVATE
-    src/application/application_schedule.cpp
     src/application/poll_input.cpp
     src/application/tick_accumulator.cpp
     src/graphics/begin_render.cpp
@@ -89,14 +85,14 @@ target_sources(antbox
     src/graphics/end_render_world.cpp
     src/rendering/draw_ants.cpp
     src/rendering/draw_colonies.cpp
-    src/rendering/rendering_schedule.cpp
     src/rendering/update_camera.cpp
     src/simulation/ant/steer_home.cpp
     src/simulation/ant/wander.cpp
     src/simulation/clock/advance_clock.cpp
     src/simulation/movement/move.cpp
-    src/simulation/simulation_schedule.cpp
     src/application.cpp
+    src/configure_schedules.hpp
+    src/configure_schedules.cpp
 )
 rlimgui_embed_font(
   TARGET antbox
