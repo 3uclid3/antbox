@@ -11,6 +11,11 @@ The repository deliberately uses the following source layout:
 - The executable entry point is under `app`.
 - Runtime unit tests are under `tests/unit/src`.
 
+## Product direction
+
+- Read `docs/design/vision.md` before making product or simulation design decisions.
+- Use `docs/design/roadmap.md` for the intended capability order. It is directional, not a strict implementation plan.
+
 ## Build and test
 
 The project requires CMake 3.30+, Ninja, and a C++26 compiler with reflection support (currently GCC 16+ with `-freflection`).
