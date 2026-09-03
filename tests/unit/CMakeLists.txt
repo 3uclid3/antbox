@@ -1,12 +1,12 @@
 # antbox_unit
 add_executable(antbox_unit
-  src/application/playback/format_tick_count_tests.cpp
-  src/application/playback/playback_tests.cpp
-  src/application/tick_accumulator_tests.cpp
-  src/math/vec2_tests.cpp
-  src/rendering/update_camera_tests.cpp
-  src/simulation/ant/steer_home_tests.cpp
-  src/simulation/movement/move_tests.cpp
+  src/app/tick_accumulator_tests.cpp
+  src/bench/format_tick_count_tests.cpp
+  src/bench/playback_tests.cpp
+  src/core/vec2_tests.cpp
+  src/render/update_camera_tests.cpp
+  src/sim/ant/steer_home_tests.cpp
+  src/sim/motion/move_tests.cpp
 
   src/main.cpp
 )

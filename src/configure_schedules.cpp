@@ -1,22 +1,22 @@
 #include "configure_schedules.hpp"
 
 #include <ant/scheduler.hpp>
-#include <antbox/application/playback/draw_playback.hpp>
-#include <antbox/application/poll_input.hpp>
-#include <antbox/application/poll_window.hpp>
-#include <antbox/graphics/begin_render.hpp>
-#include <antbox/graphics/begin_render_rlimgui.hpp>
-#include <antbox/graphics/begin_render_world.hpp>
-#include <antbox/graphics/end_render.hpp>
-#include <antbox/graphics/end_render_rlimgui.hpp>
-#include <antbox/graphics/end_render_world.hpp>
-#include <antbox/rendering/draw_ants.hpp>
-#include <antbox/rendering/draw_colonies.hpp>
-#include <antbox/rendering/update_camera.hpp>
-#include <antbox/simulation/ant/steer_home.hpp>
-#include <antbox/simulation/ant/wander.hpp>
-#include <antbox/simulation/clock/advance_clock.hpp>
-#include <antbox/simulation/movement/move.hpp>
+#include <antbox/app/poll_input.hpp>
+#include <antbox/app/poll_window.hpp>
+#include <antbox/bench/draw_playback.hpp>
+#include <antbox/render/begin_render.hpp>
+#include <antbox/render/begin_render_rlimgui.hpp>
+#include <antbox/render/begin_render_world.hpp>
+#include <antbox/render/draw_ants.hpp>
+#include <antbox/render/draw_colonies.hpp>
+#include <antbox/render/end_render.hpp>
+#include <antbox/render/end_render_rlimgui.hpp>
+#include <antbox/render/end_render_world.hpp>
+#include <antbox/render/update_camera.hpp>
+#include <antbox/sim/ant/steer_home.hpp>
+#include <antbox/sim/ant/wander.hpp>
+#include <antbox/sim/motion/move.hpp>
+#include <antbox/sim/time/advance_clock.hpp>
 
 namespace antbox {
 
@@ -39,12 +39,12 @@ auto configure_application_schedule(ant::scheduler& scheduler) -> void
 auto configure_simulation_schedule(ant::scheduler& scheduler) -> void
 {
     auto clock = scheduler.stage<simulation_schedule::clock>();
-    clock.add<advance_clock>();
+    clock.add<sim::advance_clock>();
 
     auto update = scheduler.stage<simulation_schedule::update>();
-    auto wander_system = update.add<wander>();
-    auto home_system = update.add<steer_home>();
-    auto move_system = update.add<move>();
+    auto wander_system = update.add<sim::wander>();
+    auto home_system = update.add<sim::steer_home>();
+    auto move_system = update.add<sim::move>();
 
     move_system.after(wander_system)
         .after(home_system);
@@ -77,7 +77,7 @@ auto configure_rendering_schedule(ant::scheduler& scheduler) -> void
 
     // render_imgui stage
     auto render_imgui = scheduler.stage<rendering_schedule::render_imgui>();
-    render_imgui.add<draw_playback>();
+    render_imgui.add<bench::draw_playback>();
 
     // post_render_imgui stage
     auto post_render_imgui = scheduler.stage<rendering_schedule::post_render_imgui>();

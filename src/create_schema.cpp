@@ -1,18 +1,18 @@
 #include "create_schema.hpp"
 
 #include <ant/schema.hpp>
-#include <antbox/application/application_clock.hpp>
-#include <antbox/application/input.hpp>
-#include <antbox/application/playback/playback.hpp>
-#include <antbox/graphics/color.hpp>
-#include <antbox/graphics/graphics_context.hpp>
-#include <antbox/rendering/camera.hpp>
-#include <antbox/simulation/ant/colony_member.hpp>
-#include <antbox/simulation/clock.hpp>
-#include <antbox/simulation/colony/colony.hpp>
-#include <antbox/simulation/movement/position.hpp>
-#include <antbox/simulation/movement/steering.hpp>
-#include <antbox/simulation/movement/velocity.hpp>
+#include <antbox/app/application_clock.hpp>
+#include <antbox/app/input.hpp>
+#include <antbox/bench/playback.hpp>
+#include <antbox/render/camera.hpp>
+#include <antbox/render/color.hpp>
+#include <antbox/render/graphics_context.hpp>
+#include <antbox/sim/ant/colony_member.hpp>
+#include <antbox/sim/colony/colony.hpp>
+#include <antbox/sim/motion/position.hpp>
+#include <antbox/sim/motion/steering.hpp>
+#include <antbox/sim/motion/velocity.hpp>
+#include <antbox/sim/time/clock.hpp>
 
 namespace antbox {
 
@@ -22,16 +22,16 @@ auto create_schema() -> ant::schema
 
     builder.define<application_clock>();
     builder.define<camera>();
-    builder.define<clock>();
-    builder.define<colony>();
-    builder.define<colony_member>();
+    builder.define<sim::clock>();
+    builder.define<sim::colony>();
+    builder.define<sim::colony_member>();
     builder.define<color>();
     builder.define<graphics_context>();
     builder.define<input>();
-    builder.define<playback>();
-    builder.define<position>();
-    builder.define<steering>();
-    builder.define<velocity>();
+    builder.define<bench::playback>();
+    builder.define<sim::position>();
+    builder.define<sim::steering>();
+    builder.define<sim::velocity>();
 
     return builder.build();
 }
