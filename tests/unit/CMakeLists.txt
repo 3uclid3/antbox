@@ -25,7 +25,7 @@ target_link_libraries(antbox_unit
     PRIVATE
       antbox_warnings
       antbox::antbox
-      ant::ant_testing
+      ant::testing
       doctest::doctest
 )
 
