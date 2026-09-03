@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ant/scheduler/stage.hpp>
+#include <ant/stage.hpp>
 
 namespace ant { class scheduler; }
 

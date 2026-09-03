@@ -5,15 +5,24 @@ project(antbox VERSION 0.1.0 LANGUAGES C CXX)
 set(CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
+# options
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  option(ANTBOX_BUILD_TESTS "Build antbox tests" ON)
+else()
+  option(ANTBOX_BUILD_TESTS "Build antbox tests" OFF)
+endif()
+
 # dependencies
 include(FetchContent)
 
 FetchContent_Declare(
   ant
   GIT_REPOSITORY https://github.com/3uclid3/ant.git
-  GIT_TAG 07c954ffe66c3476a7342aea85bb901876e8c17e
+  GIT_TAG 79f964a16a79917c65a1168dd18c035e53980051
 )
 
+set(ANT_BUILD_SCHEDULER ON)
+set(ANT_BUILD_TESTING ${ANTBOX_BUILD_TESTS})
 FetchContent_MakeAvailable(ant)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/rlimgui.cmake")
@@ -33,6 +42,7 @@ target_link_libraries(antbox
   PUBLIC
     ant::ant
   PRIVATE
+    ant::scheduler
     antbox_warnings
     rlimgui::rlimgui
 )
@@ -118,13 +128,7 @@ set_target_properties(antbox.app PROPERTIES OUTPUT_NAME antbox)
 target_link_libraries(antbox.app PRIVATE antbox_warnings antbox::antbox)
 
 # tests
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  option(ANTBOX_BUILD_TESTS "Build antbox tests" ON)
-else()
-  option(ANTBOX_BUILD_TESTS "Build antbox tests" OFF)
-endif()
-
 if(ANTBOX_BUILD_TESTS)
   enable_testing()
-  add_subdirectory(tests/unit)
+  add_subdirectory(tests)
 endif()

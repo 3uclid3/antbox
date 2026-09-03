@@ -1,12 +1,3 @@
-# doctest
-include(FetchContent)
-FetchContent_Declare(
-      doctest
-      GIT_REPOSITORY https://github.com/doctest/doctest.git
-      GIT_TAG        v2.5.2
-  )
-FetchContent_MakeAvailable(doctest)
-
 # antbox_unit
 add_executable(antbox_unit
   src/application/playback/format_tick_count_tests.cpp

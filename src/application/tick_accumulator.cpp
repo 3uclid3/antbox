@@ -1,6 +1,6 @@
 #include <antbox/application/tick_accumulator.hpp>
 
-#include <ant/detail/assert.hpp>
+#include <ant/detail/core/assert.hpp>
 
 namespace antbox {
 
