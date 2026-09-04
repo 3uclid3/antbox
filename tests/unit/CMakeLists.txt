@@ -3,6 +3,7 @@ add_executable(antbox_unit
   src/app/tick_accumulator_tests.cpp
   src/bench/format_tick_count_tests.cpp
   src/bench/playback_tests.cpp
+  src/core/spatial_grid_tests.cpp
   src/core/vec2_tests.cpp
   src/render/update_camera_tests.cpp
   src/sim/ant/steer_home_tests.cpp

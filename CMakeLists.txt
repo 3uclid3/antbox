@@ -63,6 +63,7 @@ target_sources(antbox
       include/antbox/bench/format_tick_count.hpp
       include/antbox/bench/playback.hpp
       include/antbox/core/chrono.hpp
+      include/antbox/core/spatial_grid.hpp
       include/antbox/core/vec2.hpp
       include/antbox/render/begin_render.hpp
       include/antbox/render/begin_render_rlimgui.hpp
