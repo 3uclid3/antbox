@@ -53,6 +53,8 @@ Do not change the pinned remote revision merely to select a local checkout. Use 
 ## Code conventions
 
 - Follow the repository `.clang-format`; format changed C++ files with `clang-format -i`.
+- Keep function declarations and definitions separate, even in headers. Explicitly defaulted functions may remain in the enclosing class or struct, and valid correctness-driven exceptions are allowed.
+- Keep out-of-class definitions in declaration order: define nested class and struct methods first, each in their declaration order, then define the enclosing type's methods in declaration order.
 - Keep public declarations under `include/antbox` and non-public implementation details under `src`.
 - Prefer testable library APIs over behavior implemented directly in `main`.
 - Keep changes focused and avoid adding abstraction or directory layers without a concrete need.
